@@ -9,7 +9,6 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
-import javax.inject.Named;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -20,7 +19,7 @@ import formation.persistence.entities.Categorie;
 import formation.services.CategorieService;
 import formation.services.CategorieServiceImpl;
 
-@Named
+@ManagedBean
 @SessionScoped
 public class CategorieMBean {
 
@@ -29,7 +28,7 @@ public class CategorieMBean {
 	private Categorie selectedCategorie = new Categorie();
 
 //	CategorieService categorieService = new CategorieServiceImpl();
-	@Autowired
+
 	CategorieService categorieService = ctx.getBean("categorieServiceImpl", CategorieService.class);
 	private List<Categorie> listCategorie;
 
