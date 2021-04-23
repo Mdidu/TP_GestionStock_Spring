@@ -5,8 +5,10 @@ import java.util.ArrayList;
 
 import java.util.List;
 
+import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
@@ -21,15 +23,23 @@ public class ProduitMBean {
 
 	private Produit produit = new Produit();
 	private Produit selectedProduit = new Produit();
-	ProduitService produitDao = new ProduitServiceImpl();
+
+	@ManagedProperty(value = "#{produitService}")
+	private ProduitService produitService;
 	private List<Produit> listProduit = new ArrayList<Produit>();
 	private String valeurRecherche;
 	private String critereRecherche;
 
 	public ProduitMBean() {
-		listProduit = produitDao.findAll();
 	}
+	
+	@PostConstruct
+	public void init() {
 
+		listProduit = produitService.findAll();
+
+	}
+	
 	public String getValeurRecherche() {
 		return valeurRecherche;
 	}
@@ -70,8 +80,16 @@ public class ProduitMBean {
 		this.listProduit = listProduit;
 	}
 
+	public ProduitService getProduitService() {
+		return produitService;
+	}
+
+	public void setProduitService(ProduitService produitService) {
+		this.produitService = produitService;
+	}
+
 	public void addProduit(ActionEvent e) {
-		produitDao.add(produit);
+		produitService.add(produit);
 		produit = new Produit();
 		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Ajout effectué avec succès"));
 	}
@@ -81,7 +99,7 @@ public class ProduitMBean {
 			FacesContext.getCurrentInstance().addMessage(null,
 					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Attention", "Aucun produit sélectionné"));
 		} else {
-			produitDao.delete(selectedProduit);
+			produitService.delete(selectedProduit);
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Suppression effectué avec succès"));
 		}
 	}
@@ -97,19 +115,19 @@ public class ProduitMBean {
 	}
 
 	public void updateProduit(ActionEvent e) {
-		produitDao.update(selectedProduit);
+		produitService.update(selectedProduit);
 		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Modification effectué avec succès"));
 	}
 
 	public void renvoi(ActionEvent e) {
 		if (critereRecherche.equalsIgnoreCase("none") || critereRecherche == null)
-			this.listProduit = produitDao.findAll();
+			this.listProduit = produitService.findAll();
 
 		else if (critereRecherche.equalsIgnoreCase("designation"))
-			this.listProduit = produitDao.findByDesignation(valeurRecherche);
+			this.listProduit = produitService.findByDesignation(valeurRecherche);
 
 		else if (critereRecherche.equalsIgnoreCase("marque"))
-			this.listProduit = produitDao.findByMarque(valeurRecherche);
+			this.listProduit = produitService.findByMarque(valeurRecherche);
 
 		critereRecherche = null;
 		valeurRecherche = null;

@@ -7,6 +7,7 @@ import java.util.List;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
@@ -37,8 +38,12 @@ public class CommandeMBean {
 
 	private Commande commande = new Commande();
 	private Commande selectedCommande = new Commande();
-	CommandeService commandeDao = new CommandeServiceImpl();
-	EtatService etatDao = new EtatServiceImpl();
+
+	@ManagedProperty(value = "#{commandeService}")
+	private CommandeService commandeService;
+	
+	@ManagedProperty(value = "#{etatService}")
+	private EtatService etatService;
 	private List<Commande> listCommande = new ArrayList<Commande>();
 	private List<Etat> listEtat = new ArrayList<Etat>();
 	private BigDecimal valeurRecherche;
@@ -57,13 +62,13 @@ public class CommandeMBean {
 	}
 
 	public CommandeMBean() {
-		listCommande = commandeDao.findAll();
+		listCommande = commandeService.findAll();
 		createPieModel();
 		createBarModel();
 	}
 
 	public List<Etat> getListEtat() {
-		this.listEtat = etatDao.findAll();
+		this.listEtat = etatService.findAll();
 		return listEtat;
 	}
 
@@ -127,11 +132,27 @@ public class CommandeMBean {
 		this.listCommande = listCommande;
 	}
 
+	public CommandeService getCommandeService() {
+		return commandeService;
+	}
+
+	public void setCommandeService(CommandeService commandeService) {
+		this.commandeService = commandeService;
+	}
+
+	public EtatService getEtatService() {
+		return etatService;
+	}
+
+	public void setEtatService(EtatService etatService) {
+		this.etatService = etatService;
+	}
+
 	public void addCommande(ActionEvent e) {
 		Etat etat = new Etat();
 		etat.setIdetat(new BigDecimal(1));
 		commande.setEtat(etat);
-		commandeDao.add(commande);
+		commandeService.add(commande);
 		commande = new Commande();
 		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Ajout effectué avec succès"));
 	}
@@ -141,7 +162,7 @@ public class CommandeMBean {
 			FacesContext.getCurrentInstance().addMessage(null,
 					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Attention", "Aucun  commande sélectionné"));
 		} else {
-			commandeDao.delete(selectedCommande);
+			commandeService.delete(selectedCommande);
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Suppression effectué avec succès"));
 		}
 	}
@@ -158,17 +179,17 @@ public class CommandeMBean {
 	}
 
 	public void updateCommande(ActionEvent e) {
-		commandeDao.update(selectedCommande);
+		commandeService.update(selectedCommande);
 		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Modification effectué avec succès"));
 	}
 
 	public void findByEtat(ActionEvent e) {
-		this.listCommande = commandeDao.findByEtat(valeurRecherche);
+		this.listCommande = commandeService.findByEtat(valeurRecherche);
 	}
 
 	public void findByDate(ActionEvent e) {
 		System.out.println(dateDebut);
-		this.listCommande = commandeDao.findByDate(dateDebut, dateFin);
+		this.listCommande = commandeService.findByDate(dateDebut, dateFin);
 	}
 
 	private void createPieModel() {
@@ -177,9 +198,9 @@ public class CommandeMBean {
 
 		PieChartDataSet dataSet = new PieChartDataSet();
 		List<Number> values = new ArrayList<>();
-		values.add(commandeDao.findByEtat(new BigDecimal(0)).size());
-		values.add(commandeDao.findByEtat(new BigDecimal(1)).size());
-		values.add(commandeDao.findByEtat(new BigDecimal(2)).size());
+		values.add(commandeService.findByEtat(new BigDecimal(0)).size());
+		values.add(commandeService.findByEtat(new BigDecimal(1)).size());
+		values.add(commandeService.findByEtat(new BigDecimal(2)).size());
 		dataSet.setData(values);
 
 		List<String> bgColors = new ArrayList<>();
@@ -211,7 +232,7 @@ public class CommandeMBean {
 		List<String> labels = new ArrayList<>();
 		int i = 0;
 		for (Produit p : prod.getListProduit()) {
-			values.add(commandeDao.findByProduit(p).size());
+			values.add(commandeService.findByProduit(p).size());
 			bgColor.add("rgba(255, 9" + i + ", 132, 0.2)");
 			borderColor.add("rgb(255, 9" + i + ", 132)");
 			labels.add(p.getMarqueproduit());

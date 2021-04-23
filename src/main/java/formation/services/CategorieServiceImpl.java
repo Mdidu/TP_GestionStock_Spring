@@ -6,11 +6,13 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import formation.persistence.entities.Categorie;
 import formation.repositories.CategorieRepository;
 
-@Service
+@Service("categorieService")
+@Transactional
 public class CategorieServiceImpl implements CategorieService {
 
 	@Autowired

@@ -12,6 +12,7 @@ import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import formation.persistence.entities.Client;
 import formation.persistence.entities.Commande;
@@ -21,7 +22,8 @@ import formation.persistence.entities.Produit;
 import formation.repositories.ClientRepository;
 import formation.repositories.CommandeRepository;
 
-@Service
+@Service("commandeService")
+@Transactional
 public class CommandeServiceImpl implements CommandeService {
 
 	@Autowired

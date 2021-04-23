@@ -7,6 +7,7 @@ import java.util.List;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
@@ -23,7 +24,9 @@ public class UserMBean {
 
 	private Stockuser user = new Stockuser();
 	private Stockuser selectedUser = new Stockuser();
-	UserService userDao = new UserServiceImpl();
+
+	@ManagedProperty(value = "#{userService}")
+	private UserService userService;
 	private List<Stockuser> listUsers = new ArrayList<Stockuser>();
 	private String test = "test";
 	
@@ -53,7 +56,7 @@ public class UserMBean {
 	}
 
 	public List<Stockuser> getListUsers() {
-		listUsers = userDao.findAll();
+		listUsers = userService.findAll();
 		return listUsers;
 	}
 
@@ -61,11 +64,19 @@ public class UserMBean {
 		this.listUsers = listUsers;
 	}
 	
+	public UserService getUserService() {
+		return userService;
+	}
+
+	public void setUserService(UserService userService) {
+		this.userService = userService;
+	}
+
 	public void addUser(ActionEvent e) {
 		Role role = new Role();
 		role.setIdrole(new BigDecimal(1));
 		user.setRole(role);
-		userDao.add(user);
+		userService.add(user);
 		user = new Stockuser();
 		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Ajout effectué avec succès"));
 	}
@@ -74,7 +85,7 @@ public class UserMBean {
 		if(selectedUser == null || selectedUser.getIduser() == new BigDecimal(0)) {
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Attention" ,"Aucun utilisateur n'a été sélectionné !"));
 		} else {
-			userDao.delete(selectedUser);
+			userService.delete(selectedUser);
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Suppresion effectué avec succès"));
 		}
 	}
@@ -84,13 +95,13 @@ public class UserMBean {
 	}
 	
 	public void updateUser(ActionEvent e) {
-		userDao.update(selectedUser);
+		userService.update(selectedUser);
 		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Modification effectué avec succès"));
 	}
 
 	public String login() {
 		
-		Stockuser userLog = userDao.findUserByLoginAndPassword(user.getLogin(),user.getPassword());
+		Stockuser userLog = userService.findUserByLoginAndPassword(user.getLogin(),user.getPassword());
 		
 		if(userLog != null) {
 			HttpSession session = SessionUtils.getSession();

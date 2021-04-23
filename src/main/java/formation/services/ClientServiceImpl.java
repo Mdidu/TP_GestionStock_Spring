@@ -11,12 +11,14 @@ import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import formation.persistence.entities.Categorie;
 import formation.persistence.entities.Client;
 import formation.repositories.ClientRepository;
 
-@Service
+@Service("clientService")
+@Transactional
 public class ClientServiceImpl implements ClientService {
 
 	@Autowired

@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
@@ -23,15 +24,17 @@ import formation.services.CategorieServiceImpl;
 @SessionScoped
 public class CategorieMBean {
 
-	private ConfigurableApplicationContext ctx = new ClassPathXmlApplicationContext("applicationContext.xml");
+//	private ConfigurableApplicationContext ctx = new ClassPathXmlApplicationContext("applicationContext.xml");
 	private Categorie categorie = new Categorie();
 	private Categorie selectedCategorie = new Categorie();
 
-//	CategorieService categorieService = new CategorieServiceImpl();
+//	private CategorieService categorieService = ctx.getBean("categorieServiceImpl", CategorieService.class);
 
-	CategorieService categorieService = ctx.getBean("categorieServiceImpl", CategorieService.class);
+	@ManagedProperty(value = "#{categorieService}")
+	private CategorieService categorieService;
+//	CategorieService categorieService = ctx.getBean("categorieServiceImpl", CategorieService.class);
 	private List<Categorie> listCategorie;
-
+	
 	public Categorie getCategorie() {
 		return categorie;
 	}
@@ -55,6 +58,14 @@ public class CategorieMBean {
 
 	public void setListCategorie(List<Categorie> listCategorie) {
 		this.listCategorie = listCategorie;
+	}
+
+	public CategorieService getCategorieService() {
+		return categorieService;
+	}
+
+	public void setCategorieService(CategorieService categorieService) {
+		this.categorieService = categorieService;
 	}
 
 	public void addCategorie(ActionEvent e) {
