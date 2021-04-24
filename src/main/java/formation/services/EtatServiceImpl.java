@@ -1,6 +1,7 @@
 package formation.services;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.List;
 
 import org.hibernate.Session;
@@ -40,7 +41,7 @@ public class EtatServiceImpl implements EtatService {
 
 	@Override
 	public Etat findById(Serializable id) {
-		return null;
+		return etatRepository.findOne((BigDecimal) id);
 	}
 
 }

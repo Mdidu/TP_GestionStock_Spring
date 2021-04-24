@@ -55,7 +55,7 @@ public class CommandeServiceImpl implements CommandeService {
 	}
 
 	@Override
-	public List<Commande> findByEtat(BigDecimal idetat) {
+	public List<Commande> findByEtat(Etat idetat) {
 		return commandeRepository.findByEtat(idetat);
 	}
 	
@@ -64,7 +64,7 @@ public class CommandeServiceImpl implements CommandeService {
 	}
 	
 	@Override
-	public List<Commande> findByDate(Date dateDebut,Date dateFin) {
+	public List<Commande> findByDate(Date dateDebut, Date dateFin) {
 		return commandeRepository.findByDatecommande(dateDebut, dateFin);
 	}
 }

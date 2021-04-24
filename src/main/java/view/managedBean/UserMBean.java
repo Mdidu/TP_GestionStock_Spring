@@ -30,7 +30,6 @@ public class UserMBean {
 	private List<Stockuser> listUsers = new ArrayList<Stockuser>();
 	private String test = "test";
 	
-	
 	public String getTest() {
 		return test;
 	}

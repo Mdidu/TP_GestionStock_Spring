@@ -37,7 +37,6 @@ public class ProduitMBean {
 	public void init() {
 
 		listProduit = produitService.findAll();
-
 	}
 	
 	public String getValeurRecherche() {

@@ -30,7 +30,6 @@ public class ClientMBean {
 	private String critereRecherche;
 
 	public ClientMBean() {
-//		this.listClient = clientService.findAll();
 	}
 	
 	@PostConstruct

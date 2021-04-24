@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
@@ -41,7 +42,7 @@ public class CommandeMBean {
 
 	@ManagedProperty(value = "#{commandeService}")
 	private CommandeService commandeService;
-	
+
 	@ManagedProperty(value = "#{etatService}")
 	private EtatService etatService;
 	private List<Commande> listCommande = new ArrayList<Commande>();
@@ -51,7 +52,17 @@ public class CommandeMBean {
 	private Date dateFin;
 	private PieChartModel pieModel;
 	private BarChartModel barModel;
-	ProduitMBean prod = new ProduitMBean();
+	private ProduitMBean prod = new ProduitMBean();
+
+	public CommandeMBean() {
+	}
+
+	@PostConstruct
+	public void init() {
+		listCommande = commandeService.findAll();
+		createPieModel();
+		createBarModel();
+	}
 
 	public PieChartModel getPieModel() {
 		return pieModel;
@@ -61,14 +72,8 @@ public class CommandeMBean {
 		this.pieModel = pieModel;
 	}
 
-	public CommandeMBean() {
-		listCommande = commandeService.findAll();
-		createPieModel();
-		createBarModel();
-	}
-
 	public List<Etat> getListEtat() {
-		this.listEtat = etatService.findAll();
+		listEtat = etatService.findAll();
 		return listEtat;
 	}
 
@@ -184,11 +189,11 @@ public class CommandeMBean {
 	}
 
 	public void findByEtat(ActionEvent e) {
-		this.listCommande = commandeService.findByEtat(valeurRecherche);
+		Etat etat = etatService.findById(valeurRecherche);
+		this.listCommande = commandeService.findByEtat(etat);
 	}
 
 	public void findByDate(ActionEvent e) {
-		System.out.println(dateDebut);
 		this.listCommande = commandeService.findByDate(dateDebut, dateFin);
 	}
 
@@ -198,9 +203,12 @@ public class CommandeMBean {
 
 		PieChartDataSet dataSet = new PieChartDataSet();
 		List<Number> values = new ArrayList<>();
-		values.add(commandeService.findByEtat(new BigDecimal(0)).size());
-		values.add(commandeService.findByEtat(new BigDecimal(1)).size());
-		values.add(commandeService.findByEtat(new BigDecimal(2)).size());
+		List<Etat> listEtats = etatService.findAll();
+		
+		for (Etat etat : listEtats) {
+			values.add(commandeService.findByEtat(etat).size());
+		}
+		
 		dataSet.setData(values);
 
 		List<String> bgColors = new ArrayList<>();
@@ -213,7 +221,7 @@ public class CommandeMBean {
 		List<String> labels = new ArrayList<>();
 		labels.add("Annuler");
 		labels.add("En cours");
-		labels.add("LivrÃ©");
+		labels.add("Livré");
 		data.setLabels(labels);
 
 		pieModel.setData(data);
