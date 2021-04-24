@@ -29,9 +29,7 @@ import formation.persistence.entities.Commande;
 import formation.persistence.entities.Etat;
 import formation.persistence.entities.Produit;
 import formation.services.CommandeService;
-import formation.services.CommandeServiceImpl;
 import formation.services.EtatService;
-import formation.services.EtatServiceImpl;
 import formation.services.ProduitService;
 
 @ManagedBean
@@ -46,6 +44,10 @@ public class CommandeMBean {
 
 	@ManagedProperty(value = "#{etatService}")
 	private EtatService etatService;
+	
+	@ManagedProperty(value = "#{produitService}")
+	private ProduitService produitService;
+	
 	private List<Commande> listCommande = new ArrayList<Commande>();
 	private List<Etat> listEtat = new ArrayList<Etat>();
 	private BigDecimal valeurRecherche;
@@ -53,9 +55,6 @@ public class CommandeMBean {
 	private Date dateFin;
 	private PieChartModel pieModel;
 	private BarChartModel barModel;
-	private ProduitMBean prod = new ProduitMBean();
-	@ManagedProperty(value = "#{produitService}")
-	private ProduitService produitService;
 
 	public CommandeMBean() {
 	}
@@ -232,7 +231,7 @@ public class CommandeMBean {
 		List<String> labels = new ArrayList<>();
 		labels.add("Annuler");
 		labels.add("En cours");
-		labels.add("Livré");
+		labels.add("Livrï¿½");
 		data.setLabels(labels);
 
 		pieModel.setData(data);
@@ -249,16 +248,17 @@ public class CommandeMBean {
 		List<String> bgColor = new ArrayList<>();
 		List<String> borderColor = new ArrayList<>();
 		List<String> labels = new ArrayList<>();
-		int i = 0;
 		List<Produit> listProduits = produitService.findAll();
+		int i = 0;
+		
 		for (Produit p : listProduits) {
-			System.out.println(p);
 			values.add(commandeService.findByProduit(p).size());
 			bgColor.add("rgba(255, 9" + i + ", 132, 0.2)");
 			borderColor.add("rgb(255, 9" + i + ", 132)");
 			labels.add(p.getMarqueproduit());
 			i += 20;
 		}
+		
 		barDataSet.setData(values);
 		barDataSet.setBackgroundColor(bgColor);
 		barDataSet.setBorderColor(borderColor);

@@ -4,16 +4,10 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.List;
 
-import org.hibernate.Criteria;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
-import org.hibernate.criterion.Criterion;
-import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import formation.persistence.entities.Categorie;
 import formation.persistence.entities.Client;
 import formation.repositories.ClientRepository;
 
@@ -48,11 +42,13 @@ public class ClientServiceImpl implements ClientService {
 	public Client findById(Serializable id) {
         return clientRepository.findOne((BigDecimal) id);
 	}
-
+	
+	@Override
 	public List<Client> findByNom(String nomclient) {
 		return clientRepository.findByNomclient(nomclient);
 	}
-
+ 
+	@Override
 	public List<Client> findByPrenom(String prenomclient) {
 		return clientRepository.findByPrenomclient(prenomclient);
 	}

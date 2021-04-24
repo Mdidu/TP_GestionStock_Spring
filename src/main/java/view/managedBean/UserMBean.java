@@ -1,6 +1,5 @@
 package view.managedBean;
 
-import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +15,6 @@ import javax.servlet.http.HttpSession;
 import formation.persistence.entities.Role;
 import formation.persistence.entities.Stockuser;
 import formation.services.UserService;
-import formation.services.UserServiceImpl;
 
 @ManagedBean
 @SessionScoped

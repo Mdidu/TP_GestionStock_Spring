@@ -1,7 +1,6 @@
 package view.managedBean;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.faces.application.FacesMessage;
@@ -11,28 +10,19 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
-import org.springframework.stereotype.Component;
-
 import formation.persistence.entities.Categorie;
 import formation.services.CategorieService;
-import formation.services.CategorieServiceImpl;
 
 @ManagedBean
 @SessionScoped
 public class CategorieMBean {
 
-//	private ConfigurableApplicationContext ctx = new ClassPathXmlApplicationContext("applicationContext.xml");
 	private Categorie categorie = new Categorie();
 	private Categorie selectedCategorie = new Categorie();
 
-//	private CategorieService categorieService = ctx.getBean("categorieServiceImpl", CategorieService.class);
-
 	@ManagedProperty(value = "#{categorieService}")
 	private CategorieService categorieService;
-//	CategorieService categorieService = ctx.getBean("categorieServiceImpl", CategorieService.class);
+
 	private List<Categorie> listCategorie;
 	
 	public Categorie getCategorie() {

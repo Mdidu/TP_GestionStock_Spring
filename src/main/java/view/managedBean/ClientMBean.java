@@ -15,7 +15,6 @@ import javax.faces.event.ActionEvent;
 import formation.persistence.entities.Client;
 import formation.persistence.entities.Role;
 import formation.services.ClientService;
-import formation.services.ClientServiceImpl;
 
 @ManagedBean
 @SessionScoped

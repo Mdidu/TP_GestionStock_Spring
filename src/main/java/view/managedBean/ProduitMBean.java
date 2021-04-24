@@ -15,7 +15,6 @@ import javax.faces.event.ActionEvent;
 
 import formation.persistence.entities.Produit;
 import formation.services.ProduitService;
-import formation.services.ProduitServiceImpl;
 
 @ManagedBean
 @SessionScoped
