@@ -126,4 +126,11 @@ public class Produit implements java.io.Serializable {
 		this.commandes = commandes;
 	}
 
+	@Override
+	public String toString() {
+		return "Produit [idproduit=" + idproduit + ", categorie=" + categorie + ", designproduit=" + designproduit
+				+ ", marqueproduit=" + marqueproduit + ", modelproduit=" + modelproduit + ", puproduit=" + puproduit
+				+ ", qteproduit=" + qteproduit + ", commandes=" + commandes + "]";
+	}
+
 }

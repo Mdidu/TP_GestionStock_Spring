@@ -32,6 +32,7 @@ import formation.services.CommandeService;
 import formation.services.CommandeServiceImpl;
 import formation.services.EtatService;
 import formation.services.EtatServiceImpl;
+import formation.services.ProduitService;
 
 @ManagedBean
 @SessionScoped
@@ -53,6 +54,8 @@ public class CommandeMBean {
 	private PieChartModel pieModel;
 	private BarChartModel barModel;
 	private ProduitMBean prod = new ProduitMBean();
+	@ManagedProperty(value = "#{produitService}")
+	private ProduitService produitService;
 
 	public CommandeMBean() {
 	}
@@ -153,6 +156,14 @@ public class CommandeMBean {
 		this.etatService = etatService;
 	}
 
+	public ProduitService getProduitService() {
+		return produitService;
+	}
+
+	public void setProduitService(ProduitService produitService) {
+		this.produitService = produitService;
+	}
+
 	public void addCommande(ActionEvent e) {
 		Etat etat = new Etat();
 		etat.setIdetat(new BigDecimal(1));
@@ -239,7 +250,9 @@ public class CommandeMBean {
 		List<String> borderColor = new ArrayList<>();
 		List<String> labels = new ArrayList<>();
 		int i = 0;
-		for (Produit p : prod.getListProduit()) {
+		List<Produit> listProduits = produitService.findAll();
+		for (Produit p : listProduits) {
+			System.out.println(p);
 			values.add(commandeService.findByProduit(p).size());
 			bgColor.add("rgba(255, 9" + i + ", 132, 0.2)");
 			borderColor.add("rgb(255, 9" + i + ", 132)");
