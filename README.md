@@ -1,16 +1,6 @@
-# TP_GestionStock_JSF_Primefaces
+# TP_GestionStock_SpringData
 
 Tp de gestion de stock 
-
-Technologies utilisé :
-
-- JavaEE
-
-- Hibernate
-
-- JSF
-
-- Primefaces
 
 Voici une partie des pages de l'application
 
